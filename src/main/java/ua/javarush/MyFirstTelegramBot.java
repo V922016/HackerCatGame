@@ -21,21 +21,26 @@ import java.util.Set;
 
 import static ua.javarush.TelegramBotContent.*;
 import static ua.javarush.TelegramBotUtils.*;
+import io.github.cdimascio.dotenv.Dotenv;
 
 public class MyFirstTelegramBot extends TelegramLongPollingBot {
     private final Map<Long,String> chatIdToUserName=new HashMap<>();
     private final Set<Long> awaitingName = new HashSet<>(); // Для отслеживания, кто должен ввести имя
-
+       
     @Override
     public String getBotUsername() {
-        // TODO: додай ім'я бота в лапки нижче
-        return "WhiteHackerCatBot";
+        // TODO: додай ім'я бота в лапки нижче 
+        Dotenv dotenv = Dotenv.load();       
+        String botUsername = dotenv.get("BOT_USRNAME");        
+        return botUsername;
     }
 
     @Override
     public String getBotToken() {
         // TODO: додай токен бота в лапки нижче
-        return "";
+        Dotenv dotenv = Dotenv.load();
+        String botToken = dotenv.get("BOT_TOKEN");        
+        return botToken;
     }
 
     @Override
@@ -51,15 +56,17 @@ public class MyFirstTelegramBot extends TelegramLongPollingBot {
 
         // Processing command /start
     if (incomingText.equals("/start")) {
-        message.setText("Привiт, майбутнiй програмiст! Як тебе звуть?");
-        awaitingName.add(ChatId); // We note that we're waiting for the username
+        message.setText("Привiт, <i>майбутнiй</i> програмiст!");        
+    } else if (incomingText.contains("привiт")) {        
+        message.setText("Як тебе звуть?"); 
+        awaitingName.add(ChatId); // We note that we're waiting for the username       
     } else if (awaitingName.contains(ChatId)) {
         // The user enters his name
         chatIdToUserName.put(ChatId, incomingText); // Saving the username
-        message.setText("Приємно познайомитися, " + incomingText + ", я - <b>Кiт</b>");
+        message.setText("Радий знайомству, " + incomingText + ", я - <b>Кiт</b>");
         awaitingName.remove(ChatId); // Removing the wait mark
     } else {
-        // For any other message (not /start)
+        // For any other message
         message.setText("Радий тебе бачити знову, " + chatIdToUserName.getOrDefault(ChatId, "незнайомець") + "!");
     }
 
@@ -77,6 +84,6 @@ public class MyFirstTelegramBot extends TelegramLongPollingBot {
 
     public static void main(String[] args) throws TelegramApiException {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
-        telegramBotsApi.registerBot(new MyFirstTelegramBot());
+        telegramBotsApi.registerBot(new MyFirstTelegramBot());        
     }
 }
