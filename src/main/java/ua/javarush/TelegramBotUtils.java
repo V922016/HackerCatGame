@@ -39,10 +39,10 @@ public class TelegramBotUtils {
     }
 
     public static SendMessage createMessage(Long chatId, String text, Map<String, String> buttons) {
-        SendMessage message = createMessage(chatId, text);
+        SendMessage message2 = createMessage(chatId, text);
         if (buttons != null && !buttons.isEmpty())
-            attachButtons(message, buttons);
-        return message;
+            attachButtons(message2, buttons);
+        return message2;
     }
 
     private static void attachButtons(SendMessage message, Map<String, String> buttons) {
