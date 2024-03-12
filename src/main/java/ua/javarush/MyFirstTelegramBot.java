@@ -119,7 +119,7 @@ public class MyFirstTelegramBot extends TelegramLongPollingBot {
         if (update.getCallbackQuery().getData().equals("step_6_btn") && getGlories(ChatId) == 140) {
             addGlories(ChatId, 40);
             SendMessage message2 = createMessage(ChatId, STEP_7_TEXT, Map.of(
-                "Злам пароля","step_7_btn"));
+                "Злам пароля +40 слави","step_7_btn"));
             sendApiMethodAsync(message2);
         }
         if (update.getCallbackQuery().getData().equals("step_7_btn") && getGlories(ChatId) == 180) {
