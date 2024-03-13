@@ -6,6 +6,9 @@ import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -32,8 +35,8 @@ public class TelegramBotUtils {
 
     public static SendMessage createMessage(Long chatId, String text) {
         SendMessage message = new SendMessage();
-        message.setText(new String(text.getBytes(), StandardCharsets.UTF_8));
-        message.setParseMode("markdown");
+        message.setText(new String(text.getBytes()));
+        message.setParseMode("HTML");
         message.setChatId(chatId);
         return message;
     }
@@ -53,7 +56,7 @@ public class TelegramBotUtils {
             String buttonValue = buttons.get(buttonName);
 
             InlineKeyboardButton button = new InlineKeyboardButton();
-            button.setText(new String(buttonName.getBytes(), StandardCharsets.UTF_8));
+            button.setText(new String(buttonName.getBytes()));
             button.setCallbackData(buttonValue);
 
             keyboard.add(List.of(button));
@@ -74,7 +77,7 @@ public class TelegramBotUtils {
         } catch (IOException e) {
             throw new RuntimeException("Can't create photo message!");
         }
-    }
+    }   
 
     public static int getGlories(Long chatId) {
         return gloryStorage.getOrDefault(chatId, 0);
