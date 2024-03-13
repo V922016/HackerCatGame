@@ -35,16 +35,14 @@ public class MyFirstTelegramBot extends TelegramLongPollingBot {
     public String getBotUsername() {
         // додай ім'я бота в лапки нижче 
         Dotenv dotenv = Dotenv.load();       
-        String botUsername = dotenv.get("BOT_USRNAME"); //For increased safety we're not using the direct bot username anymore      
-        return botUsername;
+        return dotenv.get("BOT_USRNAME"); //For increased safety we're not using the direct bot username anymore        
     }
 
     @Override
     public String getBotToken() {
         // додай токен бота в лапки нижче
         Dotenv dotenv = Dotenv.load();
-        String botToken = dotenv.get("BOT_TOKEN");  //For increased safety we're not using the direct bot token anymore        
-        return botToken;
+        return dotenv.get("BOT_TOKEN");  //For increased safety we're not using the direct bot token anymore
     }
 
     @Override
@@ -66,8 +64,7 @@ public class MyFirstTelegramBot extends TelegramLongPollingBot {
         } else if (isGreeting) {        
             message.setText("Як тебе звуть?"); 
             awaitingName.add(ChatId); // We note that we're waiting for the username       
-        } else if (awaitingName.contains(ChatId)) {
-            clearGlories(ChatId);
+        } else if (awaitingName.contains(ChatId)) {            
             addGlories(ChatId, 0);
             // The user enters his name
             chatIdToUserName.put(ChatId, incomingText); // Saving the username
@@ -75,6 +72,10 @@ public class MyFirstTelegramBot extends TelegramLongPollingBot {
             awaitingName.remove(ChatId); // Removing the wait mark
             SendMessage message2 = createMessage(ChatId, STEP_1_TEXT, Map.of("Злам холодильника +20 слави","step_1_btn"));
             sendApiMethodAsync(message2);
+            // Создание и отправка фото сообщения
+            String imageName = "step_1_pic"; // Укажите имя файла без расширения
+            SendPhoto photoMessage = createPhotoMessage(ChatId, imageName);
+            executeAsync(photoMessage); // Для асинхронной отправки
         } 
         sendApiMethodAsync(message);
     }
@@ -88,12 +89,18 @@ public class MyFirstTelegramBot extends TelegramLongPollingBot {
                 "Взяти рибку! +20 слави","step_2_btn",
                 "Скинути банку з огірками! +20 слави","step_2_btn"));
             sendApiMethodAsync(message2);
+            String imageName = "step_2_pic"; // Укажите имя файла без расширения
+            SendPhoto photoMessage = createPhotoMessage(ChatId, imageName);
+            executeAsync(photoMessage); // Для асинхронной отправки            
         }
         if (update.getCallbackQuery().getData().equals("step_2_btn") && getGlories(ChatId) == 20) {
             addGlories(ChatId, 20);
             SendMessage message2 = createMessage(ChatId, STEP_3_TEXT, Map.of(
                 "Злам робота пилососа +30 слави","step_3_btn"));
             sendApiMethodAsync(message2);
+            String imageName = "step_3_pic"; // Укажите имя файла без расширения
+            SendPhoto photoMessage = createPhotoMessage(ChatId, imageName);
+            executeAsync(photoMessage); // Для асинхронной отправки
         }
         if (update.getCallbackQuery().getData().equals("step_3_btn") && getGlories(ChatId) == 40) {
             addGlories(ChatId, 30);
@@ -102,12 +109,18 @@ public class MyFirstTelegramBot extends TelegramLongPollingBot {
                 "Проїхатися на робопилососі! +30 слави", "step_4_btn",
                 "Тікати від робопилососа! +30 слави","step_4_btn"));
             sendApiMethodAsync(message2);
+            String imageName = "step_4_pic"; // Укажите имя файла без расширения
+            SendPhoto photoMessage = createPhotoMessage(ChatId, imageName);
+            executeAsync(photoMessage); // Для асинхронной отправки
         }
         if (update.getCallbackQuery().getData().equals("step_4_btn") && getGlories(ChatId) == 70) {
             addGlories(ChatId, 30);
             SendMessage message2 = createMessage(ChatId, STEP_5_TEXT, Map.of(
                 "Одягнути та включити GoPro! +40 слави","step_5_btn"));
             sendApiMethodAsync(message2);
+            String imageName = "step_5_pic"; // Укажите имя файла без расширения
+            SendPhoto photoMessage = createPhotoMessage(ChatId, imageName);
+            executeAsync(photoMessage); // Для асинхронной отправки
         }
         if (update.getCallbackQuery().getData().equals("step_5_btn") && getGlories(ChatId) == 100) {
             addGlories(ChatId, 40);
@@ -116,26 +129,39 @@ public class MyFirstTelegramBot extends TelegramLongPollingBot {
                 "З GoPro нападати на інших котів із засідки! +40 слави", "step_6_btn",
                 "З GoPro нападати на собак із засідки! +40 слави","step_6_btn"));
             sendApiMethodAsync(message2);
+            String imageName = "step_6_pic"; // Укажите имя файла без расширения
+            SendPhoto photoMessage = createPhotoMessage(ChatId, imageName);
+            executeAsync(photoMessage); // Для асинхронной отправки
         }
         if (update.getCallbackQuery().getData().equals("step_6_btn") && getGlories(ChatId) == 140) {
             addGlories(ChatId, 40);
             SendMessage message2 = createMessage(ChatId, STEP_7_TEXT, Map.of(
                 "Злам пароля +40 слави","step_7_btn"));
             sendApiMethodAsync(message2);
+            String imageName = "step_7_pic"; // Укажите имя файла без расширения
+            SendPhoto photoMessage = createPhotoMessage(ChatId, imageName);
+            executeAsync(photoMessage); // Для асинхронной отправки
         }
         if (update.getCallbackQuery().getData().equals("step_7_btn") && getGlories(ChatId) == 180) {
             addGlories(ChatId, 50);
             SendMessage message2 = createMessage(ChatId, STEP_8_TEXT, Map.of(
                 "Залити вiдео на комп'ютер +50 слави","step_8_btn"));                
             sendApiMethodAsync(message2);
+            String imageName = "step_8_pic"; // Укажите имя файла без расширения
+            SendPhoto photoMessage = createPhotoMessage(ChatId, imageName);
+            executeAsync(photoMessage); // Для асинхронной отправки
         }
         if (update.getCallbackQuery().getData().equals("step_8_btn") && getGlories(ChatId) == 230) {
             addGlories(ChatId, 50);
             SendMessage message2 = createMessage(ChatId, FINAL_TEXT, Map.of(
-                "Вийти на подвір'я","final_btn"));                
+                "<b>Вийти на подвір'я</b>","final_btn"));                
             sendApiMethodAsync(message2);
+            String imageName = "final_pic"; // Укажите имя файла без расширения
+            SendPhoto photoMessage = createPhotoMessage(ChatId, imageName);
+            executeAsync(photoMessage); // Для асинхронной отправки
+            clearGlories(ChatId); //Cleaning glories
         }
-        clearGlories(ChatId);
+        
     }        
 }
 
