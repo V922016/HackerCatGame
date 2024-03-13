@@ -67,6 +67,7 @@ public class MyFirstTelegramBot extends TelegramLongPollingBot {
             message.setText("Як тебе звуть?"); 
             awaitingName.add(ChatId); // We note that we're waiting for the username       
         } else if (awaitingName.contains(ChatId)) {
+            clearGlories(ChatId);
             addGlories(ChatId, 0);
             // The user enters his name
             chatIdToUserName.put(ChatId, incomingText); // Saving the username
@@ -134,6 +135,7 @@ public class MyFirstTelegramBot extends TelegramLongPollingBot {
                 "Вийти на подвір'я","final_btn"));                
             sendApiMethodAsync(message2);
         }
+        clearGlories(ChatId);
     }        
 }
 
